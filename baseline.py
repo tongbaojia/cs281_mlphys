@@ -13,7 +13,7 @@ BRICK_Z = 75000
 SAFE_M = 10000
 dZ = 205
 
-df = pd.read_csv('DS_2_train.csv', index_col=0)
+df = pd.read_csv('dark_matter_data/train.csv', index_col=0)
 
 plt.figure(dpi = 80, figsize=(5,4))
 first = plt.hist(df.chi2[df.signal == True], normed = True, label = 'signal')
@@ -57,7 +57,6 @@ def plot_bg_and_mc(pbg, pmc, id=0, step=1):
     dd.insert(loc=0, column='z', value=dZ)
     d1 = d0 + dd
     print(d1.shape)
-    #print (d0)§
     C = plt.cm.Reds(0.5)
     lc_mc = Line3DCollection(list(zip(d0.values, d1.values)), colors=C, alpha=0.9, lw=2)
     
@@ -85,7 +84,7 @@ from sklearn.ensemble import RandomForestClassifier
 clf = RandomForestClassifier(max_depth = 5, n_estimators = 100, n_jobs = -1)
 print len(train_df)
 clf.fit(train_df[:, :-1], np.array(train_df[:, -1], dtype = int))
-df_test = pd.read_csv('DS_2_test.csv', index_col=0)
+df_test = pd.read_csv('dark_matter_data/test.csv', index_col=0)
 df_test.head()
 prediction = clf.predict_proba(df_test.values[:, :-1])[:, 1]
 baseline = pd.DataFrame(prediction, columns=['Prediction'])
