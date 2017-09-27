@@ -1,4 +1,4 @@
-# dark_matter
-kaggle: https://inclass.kaggle.com/c/dark-matter-signal-search-episode-2/data
+# CS281 Project
+## Use NN to learn physics variables for signal selection and background rejection
 
 by Jonah Philion and Tony Tong
