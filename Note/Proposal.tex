@@ -13,7 +13,7 @@
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \title{CS281 Project Proposal \\
-	\large use Machine to learn variables for signal selection in High Energy Physics}
+	\large Scalable Signal Region Identification with applications to the ATLAS $W^\pm W^\pm W^\pm$ Analysis}
 \author{Nicolo Foppiani, Jonah Philion, Baojia(Tony) Tong}
 \date{}                                           % Activate to display a given date or no date
 
@@ -21,14 +21,14 @@
 \maketitle
 
 \paragraph{}
-This project will eventually target as an application paper. In high-energy physics, machine learning tools have been successfully applied to a wealth of problems. The large datasets collected by the experiments at the Large Hadron Collider(LHC) (\href{https://home.cern/about/computing/processing-what-record}{25 GB/s}) with highly correlated observables provide an ideal environment for employing machine learning tools.
+This project will research a scalable algorthm for the identification of regions of significant signal content in a high background parameter space. Our motivation for studying this problem comes from our field of high energy particle physics. In general, a discovery in particle physics is equivalent to statistically significant aberrations in count data from a given model over the experimental parameter space. First, we will build a robust algorithm which identifies these ``signal regions'' efficiently. Second, we will apply and evaluate the algorithm on simulation data from the ATLAS $W^\pm W^\pm W^\pm$ analysis.
 
 \paragraph{Problem Statement}
 %At the LHC, during each collision of protons different physical processes happen with different probabilities. 
 %The most interesting ones are those with small probability, because they can probe physical quantities not yet observed. 
 The search project is to try to measure the triboson production for the first time at the LHC using the ATLAS detector, one of the two main experiments at the LHC. Specifically, the signal process under study is the following: $pp \rightarrow W^{\pm}W^{\pm}W^{\mp}$. 
 %The $W$ bosons are not detected directly as they decay immediately into a lepton and a neutrino. The former, which can be either an electron ($e$) or a muon ($\mu$) is measured by the detector, whereas the latter escape the detector with no interaction, but can be inferred using conservation of momentum. 
-This measurement probes the so-called "quartic coupling": a quantity which is predicted by the current theory of the fundamental interactions, called Standard Model (SM) to be small. This process hasn't been observed yet, however, if the current theory was not correct, it would be expected an important difference between the measured value of this quantity and the prediction. This could be an insight toward some new physics process, not yet discovered, which could completely change our understanding of fundamental nature. With the higher center of mass energy of the collisions and the newer and larger datasets collected during the last few years, the probability for this process to happen should be large enough in order to produce several such events.
+This measurement probes the so-called ``quartic coupling'': a quantity which is predicted by the current theory of the fundamental interactions, called Standard Model (SM) to be small. This process hasn't been observed yet, however, if the current theory was not correct, it would be expected an important difference between the measured value of this quantity and the prediction. This could be an insight toward some new physics process, not yet discovered, which could completely change our understanding of fundamental nature. With the higher center of mass energy of the collisions and the newer and larger datasets collected during the last few years, the probability for this process to happen should be large enough in order to produce several such events.
 
 \paragraph{}
 However, there is a great variety of well known processes which mimic the signal and which therefore are called background. Different other electroweak process ($W^{\pm}W^{\mp}$, $ZZ$, $W^{\pm}Z$) has about $O(10^3)$ times higher rate and can also generate signatures that are similar to the signal. Other SM process like $t\bar{t}$ has about $O(10^5)$ times higher rate, and can generate decay products that fake the signal signatures in the detector. 
