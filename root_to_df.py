@@ -71,7 +71,7 @@ def get_df(file, classification):
             "met_pt",
             "met_phi",
             "weight",
-            "is_sig"
+            "cl"
             ]
 
     df = pd.DataFrame(info)
@@ -79,33 +79,29 @@ def get_df(file, classification):
     return df
 
 def parse_arguments(argv):
-    parser = argparse.ArgumentParser(description='Convert signal and background root files into one dataframe (csv).')
+    parser = argparse.ArgumentParser(description='Convert an MC root file into a dataframe (csv).')
 
-    parser.add_argument('-s', '--signal', type=str, required=True,
-                        help='Signal file.')
-    parser.add_argument('-b', '--background', type=str, required=True,
-                        help='Background file.')
+    parser.add_argument('-r', '--root', type=str, required=True,
+                        help='Root file to convert.')
     parser.add_argument('-o', '--output', type=str, required=True,
                         help='Output file.')
+    parser.add_argument('-c', '--classification', type=str, required=True,
+                        help='Classification name (i.e. "WZ"')
 
     options = parser.parse_args(argv)
     return options
 
-def merge_and_save(sig_df, bkg_df, output):
+def save(sig_df, output):
     print 'saving to ' + output + '...'
-    df = pd.concat([sig_df, bkg_df], axis=0)
-    df['internal_id'] = df.index
-    df.index = range(len(df)) 
-    df.to_csv(output, index=False)   
+    sig_df.to_csv(output, index=False)   
     print output + ' created!'
 
 if __name__ == '__main__':
     options = parse_arguments(sys.argv[1:])
 
-    sig_df = get_df(options.signal, classification=1)
-    bkg_df = get_df(options.background, classification=0)
+    sig_df = get_df(options.root, classification=options.classification)
 
-    merge_and_save(sig_df, bkg_df, options.output)
+    save(sig_df, options.output)
 
 
 
