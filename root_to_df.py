@@ -98,6 +98,8 @@ def save(sig_df, output):
 
 if __name__ == '__main__':
     options = parse_arguments(sys.argv[1:])
+    assert(options.root[-5:] == '.root'), 'input file must be .root'
+    assert(options.output[-4:] == '.csv'), 'output file must be .csv'
 
     sig_df = get_df(options.root, classification=options.classification)
 
