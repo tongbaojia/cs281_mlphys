@@ -25,5 +25,3 @@ An example training script is included in ``train.py``. You may have to change t
 
 ``python train.py``
 
-## Package Requirements
-Nothing yet...
