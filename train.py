@@ -36,7 +36,9 @@ def train(df, x_cols):
 
     return df, model
 
-data_dir = '../data/correct/'
+
+data_dir = '../data/correct/' # Modify this
+
 df = get_data(data_dir)
 df = add_cl_ix(df)
 
@@ -45,7 +47,7 @@ df,model = train(df, x_cols)
 
 x_bins = np.linspace(0, max(df.preds), 30)
 fig = plt.figure(figsize=(10,6))
-plt.title('Separability')
+plt.title('XGBClassifier Separability')
 gs = gridspec.GridSpec(3, 1)
 ax = plt.subplot(gs[0,:])
 n_bkg,bins,paint = plt.hist(df[df.is_sig == 0].preds, bins=x_bins, weights=df[df.is_sig == 0].weight, color='r')
@@ -70,7 +72,7 @@ plt.close(fig)
 fpr, tpr, thresholds = metrics.roc_curve(df.is_sig.values, df.preds.values, pos_label=1)
 fig = plt.figure(figsize=(6,6))
 plt.plot(fpr, tpr)
-plt.title('ROC')
+plt.title('XGBClassifier ROC')
 plt.annotate('Area: ' + str(round(metrics.auc(fpr, tpr), 2)), xy=(.8,.2), xycoords='axes fraction')
 plt.xlim((0,1))
 plt.ylim((0,1))
