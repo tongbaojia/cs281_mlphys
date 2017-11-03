@@ -37,7 +37,7 @@ def train(df, x_cols):
     return df, model
 
 
-data_dir = '../data/correct/' # Modify this
+data_dir = '../data/' # Modify this
 
 df = get_data(data_dir)
 df = add_cl_ix(df)

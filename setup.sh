@@ -9,7 +9,7 @@ fi
 # User specific aliases and functions
 source new-modules.sh
 
-module load gcc/4.9.3-fasrc01 tensorflow/1.0.0-fasrc01
+# module load gcc/4.9.3-fasrc01 tensorflow/1.0.0-fasrc01
 
 # Load Anaconda
 module load python/2.7.11-fasrc01
