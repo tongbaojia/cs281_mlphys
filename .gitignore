@@ -9,3 +9,4 @@ models
 plots
 images/*
 python/heppy/__*
+data
