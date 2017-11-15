@@ -9,6 +9,13 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
 from sklearn import metrics
 
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
+from torch.utils.data import Dataset, DataLoader
+
+from sys import argv
 
 def get_data(data_dir):
     fs = [data_dir + f for f in os.listdir(data_dir) if ('signal' in f or 'WZ' in f) and f[0] != '.']
@@ -37,12 +44,44 @@ def train(df, x_cols):
     return df, model
 
 
-data_dir = '../data/' # Modify this
+class WWdataset(Dataset):
+    """Face Landmarks dataset."""
 
-df = get_data(data_dir)
-df = add_cl_ix(df)
+    def __init__(self, inputs, target):
+        """
+        Args:
+            csv_file (string): Path to the csv file with annotations.
+            root_dir (string): Directory with all the images.
+            transform (callable, optional): Optional transform to be applied
+                on a sample.
+        """
+        self.input = inputs
+        self.target = target
 
-x_cols = [col for col in df.columns if not col in ['runNumber', 'lbNumber', 'eventNumber', 'SFOS', 'is_sig', 'weight', 'cl', 'preds']]
+    # def __len__(self):
+    #     return len(self.target)
+    #
+    # def __getitem__(self, idx):
+    #     img_name = os.path.join(self.root_dir, self.landmarks_frame.ix[idx, 0])
+    #     image = io.imread(img_name)
+    #     landmarks = self.landmarks_frame.ix[idx, 1:].as_matrix().astype('float')
+    #     landmarks = landmarks.reshape(-1, 2)
+    #     sample = {'image': image, 'landmarks': landmarks}
+    #
+    #     if self.transform:
+    #         sample = self.transform(sample)
+    #
+    #     return sample
+
+
+n_epochs = 20
+loss_fn = torch.nn.BCELoss(size_average=True)
+learning_rate = 1e-3
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-6)
+
+
+
+
 df,model = train(df, x_cols)
 
 x_bins = np.linspace(0, max(df.preds), 30)
@@ -83,18 +122,24 @@ plt.ylabel('True Positive Rate')
 plt.savefig('plots/roc_curve.pdf')
 plt.close(fig)
 
+if __name__ == '__main__':
+
+    data_dir = argv[1]
+    #prepare the data
+
+    #df is the output
+    # x_cols is the input
+    # target_var = get_data(data_dir)
+    # target_var = add_cl_ix(df)
+    # input_vars = [col for col in df.columns if not col in ['runNumber', 'lbNumber', 'eventNumber', 'SFOS', 'is_sig', 'weight', 'cl', 'preds']]
+
+    # split in minibatches
 
 
+    # declare net with parameters
 
 
+    # training
 
 
-
-
-
-
-
-
-
-
-
+    # plots
