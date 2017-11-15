@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,top=3cm,bottom=3cm,left=2cm,right=2cm]{geometry}
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{bashful}
+\usepackage{amsmath}
+\usepackage[english,ngerman]{babel}
+\usepackage{hyperref}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{CS281 Status Update \\
+	\large Scalable Signal Region Identification with applications to the ATLAS $W^\pm W^\pm W^\pm$ Analysis}
+\author{Nicolo' Foppiani, Jonah Philion, Baojia(Tony) Tong}
+\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\renewcommand{\abstractname}{Abstract}
+\begin{abstract}
+We want to find signal regions and control regions blah blah blah. We use machine learning to discover physics efficiently.
+\end{abstract}
+
+\paragraph{Problem Statement}
+In particle physics analysis, there is in general some ``signal" process that generates data simultaneously as ``background" processes generate similar looking data. Given unlabeled data from all processes, our goal is to determine the likelihood that the signal process exists.\\
+To generate data $\{x_i\}_N$ lying in $\mathbb{R}^n$, we associate to the signal process a smooth function $s: \mathbb{R}^n \rightarrow \mathbb{R}_{> 0}$ and to the background process $b: \mathbb{R}^n \rightarrow \mathbb{R}_{> 0}$ such that for any volume $V \subset \mathbb{R}^n$, the number of background events in this region $n_{bkg}(V)$ and the number of signal events in this region $n_{sig}(V)$ can  be modeled as 
+
+\[ n_{bkg}(V) \sim \text{Pois} \left( \int_V b \right)\]
+\[n_{sig}(V) \sim \text{Pois} \left( \int_V s \right) \]
+
+\paragraph{}
+The data is generated from these Poisson processes. We can then determine the likelihood of the existence of the signal process by choosing regions of our parameter space $\{V_j\}$ then comparing the number of events observed in these regions to the values $\{n_{bkg}(V_i)\}$ and $\{n_{sig}(V_i) + n_{bkg}(V_i)\}$. For the case of large $N$, we can approximate the Poisson distribution as Gaussian. For a region with $O$ observed events, the significance is then
+\begin{equation}
+Significance \approx \frac{O-n_{bkg}(V)}{\sqrt{n_{bkg}(V)}}
+\label{significance}
+\end{equation}
+
+\paragraph{}
+We have simplified our problem to determining the set $\{V_i\}$ of regions of parameter space which will maximize the definition of significance in Equation ~\ref{significance}.
+
+\paragraph{Baselines}
+Since our goal is to determine volumes of parameter space which maximize the significance, one baseline is to take the volume to be the entire paramter space. The metrics for this approach are summarized in Figure ~\ref{baselines}.
+
+In particle physics, we need significance greater than $3\sigma$ to publish, so the fact that no cuts at all produces a significance of $0.517\sigma$ means that we need to use smarter approaches to discover WWW decay.
+
+A description of the data used in this analysis is in Figure ~\ref{data}.
+
+\renewcommand{\figurename}{Fig.}
+\begin{figure}
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+
+  %\hline
+  \cline{2-4}
+  \multicolumn{1}{c|}{} & $n_{sig}$ & $n_{bkg}$ & $n_{sig}/\sqrt{n_{bkg}}$ \\
+  \hline
+  No Cuts & 47.09 & 8288.18 & 0.517$\sigma$ \\
+  \hline
+\end{tabular}
+\caption{Baseline measurements. $n_{sig}$ is the weighted sum of all signal events, $n_{bkg}$ is the weighted sum of all background events, and $S/\sqrt{B}$ is our metric for significance. We would like to maximize the significance to some value above 3 in particle physics.}
+\label{baselines}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{|c|c|}
+
+  \hline
+  Variable Name & Description  \\
+ \hline
+ \hline
+$ j0_m $ & something cool\\
+\hline
+$ j0_{pt} $ & something cool\\
+\hline
+$ j0_{eta} $ & something cool\\
+\hline
+$ j0_{phi} $ & something cool\\
+\hline
+$ l0_m $ & something cool\\
+\hline
+$ l0_{pt} $ & something cool\\
+\hline
+$ l0_{eta} $ & something cool\\
+\hline
+$ l0_{phi} $ & something cool\\
+\hline
+$ l0_c $ & something cool\\
+\hline
+$ l0_{isEl} $ & something cool\\
+\hline
+$ l1_m $ & something cool\\
+\hline
+$ l1_{pt} $ & something cool\\
+\hline
+$ l1_{eta} $ & something cool\\
+\hline
+$ l1_{phi} $ & something cool\\
+\hline
+$ l1_c $ & something cool\\
+\hline
+$ l1_{isEl} $ & something cool\\
+\hline
+$ l2_m $ & something cool\\
+\hline
+$ l2_{pt} $ & something cool\\
+\hline
+$ l2_{eta} $ & something cool\\
+\hline
+$ l2_{phi} $ & something cool\\
+\hline
+$ l2_c $ & something cool\\
+\hline
+$ l2_{isEl} $ & something cool\\
+\hline
+$ met_{pt} $ & something cool\\
+\hline
+$ met_{phi} $ & something cool\\
+\hline
+$ weight $ & something cool\\
+\hline
+$ cl $ & The process that generated event. In our analysis, we only include WWW and WZ.\\
+\hline
+$ is_{sig} $ & 1 if the process which generated this event is signal. 0 otherwise.\\
+\hline
+\end{tabular}
+\caption{Feature Space. We measure $cl$, $is_{sig}$, and $weight$ only in simulation. We measure all other variables in real data and in simulation. Our general approach to train classifiers to predict $is_{sig}$ given the jet and lepton features.}
+\label{data}
+\end{center}
+\end{figure}
+
+
+
+
+\paragraph{Approaches}
+\begin{enumerate}
+\item {\bf Naive Classification (Jonah)}
+In which I train $x \rightarrow y$ classifier where $x$ is a list of kinematic and categorical variables and $y$ is $0$ for background and $1$ for signal.
+
+\item {\bf Category Specific Classification (Jonah)}
+In which I group the data by the categorical variables, then train a classifier on each of these groups (I get above 2 sigma with this).
+
+\item {\bf Soft Significance (Jonah)}
+I make the significance differentiable then do gradient descent on it. I haven't gotten this to work better than the No-Cut baseline.
+
+\item {\bf Neural Network (Nico)}
+Fun with PyTorch
+
+\item {\bf Physics Motivated Cuts (Tony)}
+Cuts from the most recent analysis paper
+
+\end{enumerate}
+
+\end{document}  
