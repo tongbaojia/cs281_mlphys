@@ -149,8 +149,14 @@ In which I group the data by the categorical variables, then train a classifier 
 \item {\bf Soft Significance (Jonah)}
 I make the significance differentiable then do gradient descent on it. I haven't gotten this to work better than the No-Cut baseline.
 
-\item {\bf Neural Network (Nico)}
-Fun with PyTorch
+\item {\bf Logistic Regression (Nico)}
+We started to train a logistic regression using Pytorch, mixing together all the kinematic and categorical variables.
+
+\item {\bf Neural networks (Nico)}
+We extended the logistic regression developed in Pytorch to a more complex neural network with hidden layers. We tried a network with 
+
+\item {\bf Loss function containing signficance (Nico)}
+Optimizing the crossentropy lets us make inference on the probability to be signal for each value of the features. However, the goal is not to have the greatest possible separation in two classes, but to obtain the highest significance for the discovery. The problem of optimizing an analysis in order to maximize the significance is hard and few studies are present in the scientific literature. The most naive approach is to make the significance differentiable and optimize it as a loss function. While trying it, we are also trying to implement a more robust loss function.
 
 \item {\bf Physics Motivated Cuts (Tony)}
 Cuts from the most recent analysis paper
