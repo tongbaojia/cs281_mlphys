@@ -3,6 +3,11 @@
 **/__pycache__
 .ipynb_checkpoints
 *.ipynb
+*.pyc
+*.aux
+*.log
+*.out
+*.synctex.gz
 bin
 obj
 models
