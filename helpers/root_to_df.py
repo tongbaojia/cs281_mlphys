@@ -32,17 +32,36 @@ def get_info(event):
             event.l2_phi,
             event.l2_c,
             event.l2_isEl,
+            event.l0_l1_m,
+            event.l0_l1_pt,
+            event.l0_l1_eta,
+            event.l0_l1_phi,
+            event.l0_l1_c,
+            event.l0_l1_isEl,
+            event.l1_l2_m,
+            event.l1_l2_pt,
+            event.l1_l2_eta,
+            event.l1_l2_phi,
+            event.l1_l2_c,
+            event.l1_l2_isEl,
+            event.l2_l0_m,
+            event.l2_l0_pt,
+            event.l2_l0_eta,
+            event.l2_l0_phi,
+            event.l2_l0_c,
+            event.l2_l0_isEl,
+            event.m_3l,
+            event.pt_3l,
+            event.eta_3l,
+            event.phi_3l,
             event.met_pt,
             event.met_phi,
+            event.mt_3l,
+            event.m_new_3l,
             event.weight,
             ]
-
-def get_df(file, classification):
-    f = ROOT.TFile.Open(file, "read")
-    t = f.Get("TinyTree")
-    info = [get_info(event) + [classification] for event in tqdm(t)]
-
-    col_names = ["runNumber",
+##create global variable
+col_names = ["runNumber",
             "lbNumber",
             "eventNumber",
             "SFOS",
@@ -68,11 +87,40 @@ def get_df(file, classification):
             "l2_phi",
             "l2_c",
             "l2_isEl",
+            "l0_l1_m",
+            "l0_l1_pt",
+            "l0_l1_eta",
+            "l0_l1_phi",
+            "l0_l1_c",
+            "l0_l1_isEl",
+            "l1_l2_m",
+            "l1_l2_pt",
+            "l1_l2_eta",
+            "l1_l2_phi",
+            "l1_l2_c",
+            "l1_l2_isEl",
+            "l2_l0_m",
+            "l2_l0_pt",
+            "l2_l0_eta",
+            "l2_l0_phi",
+            "l2_l0_c",
+            "l2_l0_isEl",
+            "m_3l",
+            "pt_3l",
+            "eta_3l",
+            "phi_3l",
+            "mt_3l",
+            "mnew_3l", ##colinear nutrino with 3l direction
             "met_pt",
             "met_phi",
             "weight",
             "cl"
             ]
+
+def get_df(file, classification):
+    f = ROOT.TFile.Open(file, "read")
+    t = f.Get("TinyTree")
+    info = [get_info(event) + [classification] for event in tqdm(t)]
 
     df = pd.DataFrame(info)
     df.columns = col_names

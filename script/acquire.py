@@ -18,7 +18,7 @@ def run_conversions(folder_paths, options):
     to_convert = folder_paths.keys() if options.mcs is None else options.mcs.split(' ')
 
     for mc in to_convert:
-        command = 'python helpers/root_to_df.py -r ' + folder_paths[mc] + ' -o ' + options.output + mc + options.extension + '.csv' + ' -c ' + mc
+        command = 'python ../helpers/root_to_df.py -r ' + folder_paths[mc] + ' -o ' + options.output + mc + options.extension + '.csv' + ' -c ' + mc
         print 'cmd:', command
         subprocess.call(command, shell=True)
 
