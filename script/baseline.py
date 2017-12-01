@@ -14,42 +14,47 @@ To run it, simply: python baseline.py
 
 
 def main():
-    df = load("../data/signal_WmWpWm.csv")
 
-    for i in [
-        # "bkg_Gee.csv",
-        # "bkg_Gtautau.csv",  
-        # "bkg_stl.csv",   
-        # "bkg_ttW0.csv",  
-        # "bkg_ttW2.csv",  
-        # "bkg_ttZ1.csv",    
-        # "bkg_Wtll.csv",    
-        # "bkg_Zmumu.csv",    
-        # "bkg_ZZllll.csv",  
-        # "bkg_ZZvvll.csv",
-        # "bkg_Gmumu.csv",
-        # "bkg_stlat.csv",    
-        # "bkg_ttll.csv",  
-        # "bkg_ttW1.csv",  
-        # "bkg_ttZ0.csv",  
-        # "bkg_Wtllat.csv",
-        # "bkg_WZlvll.csv", 
-        # "bkg_Zee.csv",     
-        # "bkg_Ztautau.csv",  
-        # "bkg_ZZqqll.csv", 
-        "bkg_WZlvll.csv", 
-        "bkg_WZqqll.csv", 
-        "signal_WpWpWm.csv",
-        "signal_WmWpWm.csv",
-        ]:  
-        print(i)
-        df = load("../data/" + i)
-        cut(df)
+    # for i in [
+    #     # "bkg_Gee.csv",
+    #     # "bkg_Gtautau.csv",  
+    #     # "bkg_stl.csv",   
+    #     # "bkg_ttW0.csv",  
+    #     # "bkg_ttW2.csv",  
+    #     # "bkg_ttZ1.csv",    
+    #     # "bkg_Wtll.csv",    
+    #     # "bkg_Zmumu.csv",    
+    #     # "bkg_ZZllll.csv",  
+    #     # "bkg_ZZvvll.csv",
+    #     # "bkg_Gmumu.csv",
+    #     # "bkg_stlat.csv",    
+    #     # "bkg_ttll.csv",  
+    #     # "bkg_ttW1.csv",  
+    #     # "bkg_ttZ0.csv",  
+    #     # "bkg_Wtllat.csv",
+    #     # "bkg_WZlvll.csv", 
+    #     # "bkg_Zee.csv",     
+    #     # "bkg_Ztautau.csv",  
+    #     # "bkg_ZZqqll.csv", 
+    #     "bkg_WZlvll.csv", 
+    #     "bkg_WZqqll.csv", 
+    #     "signal_WpWpWm.csv",
+    #     "signal_WmWpWm.csv",
+    #     ]:  
+    #     print(i)
+    #     df = load("../data/" + i)
+    #     cut(df)
+
+    bkg_df = get_data("../data/", prename = "bkg")
+    bkg_count = cut(bkg_df)
+    sig_df = get_data("../data/", prename = "sig")
+    sig_count = cut(sig_df)
+
     print("Done!")
 
 def load(filename):
     df = pd.read_csv(filename)
-    df.head()
+    #df.head()
     #list.df
     return df
 
@@ -90,29 +95,32 @@ def cut(df):
     df.loc[(df.SFOS == 2) & (df.met_pt < 55), 'cutweight']= 0
 
     ## SF Mass for SFOS--0
-    df.loc[(df.SFOS == 0) & (((df.l0_l1_isEl % 2 == 0) & (df.l0_l1_m < 20)) | ((df.l1_l2_isEl % 2 == 0) & (df.l1_l2_m < 20)) | ((df.l2_l0_isEl % 2 == 0) & (df.l2_l0_m < 20))), 'cutweight']= 0
+    df.loc[(df.SFOS == 0) & (((df.l0_l1_isEl % 2 == 0) 
+        & (df.l0_l1_m < 20)) | ((df.l1_l2_isEl % 2 == 0) 
+        & (df.l1_l2_m < 20)) | ((df.l2_l0_isEl % 2 == 0) 
+        & (df.l2_l0_m < 20))), 'cutweight']= 0
 
     ## Z veto
     ## for SFOS--0
     df.loc[(df.SFOS == 0) 
-    & ((df.l0_l1_isEl == 2) & ((df.l0_l1_m > 75) & (df.l0_l1_m < 105))) 
-    & ((df.l1_l2_isEl == 2) & ((df.l1_l2_m > 75) & (df.l1_l2_m < 105))) 
-    & ((df.l2_l0_isEl == 2) & ((df.l2_l0_m > 75) & (df.l2_l0_m < 105))), 'cutweight']= 0
+        & ((df.l0_l1_isEl == 2) & ((df.l0_l1_m > 75) & (df.l0_l1_m < 105))) 
+        & ((df.l1_l2_isEl == 2) & ((df.l1_l2_m > 75) & (df.l1_l2_m < 105))) 
+        & ((df.l2_l0_isEl == 2) & ((df.l2_l0_m > 75) & (df.l2_l0_m < 105))), 'cutweight']= 0
     ## for SFOS--1
     df.loc[(df.SFOS == 1) &
-    ( (((df.l0_l1_isEl % 2 == 0) & (df.l0_l1_c == 0)) & ((df.l0_l1_m > 55) & (df.l0_l1_m < 110))) 
-    | (((df.l1_l2_isEl % 2 == 0) & (df.l1_l2_c == 0)) & ((df.l1_l2_m > 55) & (df.l1_l2_m < 110))) 
-    | (((df.l2_l0_isEl % 2 == 0) & (df.l2_l0_c == 0)) & ((df.l2_l0_m > 55) & (df.l2_l0_m < 110)))
-    ), 'cutweight']= 0
+        ( (((df.l0_l1_isEl % 2 == 0) & (df.l0_l1_c == 0)) & ((df.l0_l1_m > 55) & (df.l0_l1_m < 110))) 
+        | (((df.l1_l2_isEl % 2 == 0) & (df.l1_l2_c == 0)) & ((df.l1_l2_m > 55) & (df.l1_l2_m < 110))) 
+        | (((df.l2_l0_isEl % 2 == 0) & (df.l2_l0_c == 0)) & ((df.l2_l0_m > 55) & (df.l2_l0_m < 110)))
+        ), 'cutweight']= 0
     ## for SFOS--2
     df.loc[(df.SFOS == 2) &
-    ( (((df.l0_l1_isEl % 2 == 0) & (df.l0_l1_c == 0)) & ((df.l0_l1_m > 70) & (df.l0_l1_m < 110))) 
-    | (((df.l1_l2_isEl % 2 == 0) & (df.l1_l2_c == 0)) & ((df.l1_l2_m > 70) & (df.l1_l2_m < 110))) 
-    | (((df.l2_l0_isEl % 2 == 0) & (df.l2_l0_c == 0)) & ((df.l2_l0_m > 70) & (df.l2_l0_m < 110)))
-    ), 'cutweight']= 0
+        ( (((df.l0_l1_isEl % 2 == 0) & (df.l0_l1_c == 0)) & ((df.l0_l1_m > 70) & (df.l0_l1_m < 110))) 
+        | (((df.l1_l2_isEl % 2 == 0) & (df.l1_l2_c == 0)) & ((df.l1_l2_m > 70) & (df.l1_l2_m < 110))) 
+        | (((df.l2_l0_isEl % 2 == 0) & (df.l2_l0_c == 0)) & ((df.l2_l0_m > 70) & (df.l2_l0_m < 110)))
+        ), 'cutweight']= 0
 
     ## Inclusive jet veto; could be ignored
-    #df.loc[(df.Njet <= 1), 'cutweight']= 0
+    df.loc[(df.Njet <= 1), 'cutweight']= 0
 
     ## Check total weight
     final_weight = df.cutweight.sum()
@@ -121,13 +129,34 @@ def cut(df):
     final_weight_SFOS2 = df[df.SFOS == 2].cutweight.sum()
 
     ## Get the output
-    print(original_weight, final_weight)
+    ## print(original_weight, final_weight)
     print("Original: {:.3f} Final {:.3f} Eff {:.3f}".format(original_weight, final_weight, (final_weight/ original_weight) * 100))
     print("SFOS0 Original: {:.3f} Final {:.3f} Eff {:.3f}".format(original_weight_SFOS0, final_weight_SFOS0, (final_weight_SFOS0/ (original_weight_SFOS0 + 0.0001)) * 100))
     print("SFOS1 Original: {:.3f} Final {:.3f} Eff {:.3f}".format(original_weight_SFOS1, final_weight_SFOS1, (final_weight_SFOS1/ (original_weight_SFOS1 + 0.0001)) * 100))
     print("SFOS2 Original: {:.3f} Final {:.3f} Eff {:.3f}".format(original_weight_SFOS2, final_weight_SFOS2, (final_weight_SFOS2/ (original_weight_SFOS2 + 0.0001)) * 100))
 
+    return {"N_ori": original_weight, "N_fin": final_weight, "Eff": (final_weight/ original_weight),
+        "SFOS0_N_ori": original_weight_SFOS0, "SFOS0_N_fin": final_weight_SFOS0, "SFOS0_Eff": (final_weight_SFOS0/ original_weight_SFOS0),
+        "SFOS1_N_ori": original_weight_SFOS1, "SFOS1_N_fin": final_weight_SFOS1, "SFOS1_Eff": (final_weight_SFOS1/ original_weight_SFOS1),
+        "SFOS2_N_ori": original_weight_SFOS2, "SFOS2_N_fin": final_weight_SFOS2, "SFOS2_Eff": (final_weight_SFOS2/ original_weight_SFOS2),
+    }
 
+def get_data(data_dir, prename="bkg"):
+    fs = [data_dir + f for f in os.listdir(data_dir) if f[0] != '.']
+    df = pd.DataFrame()
+
+    for f in fs:
+        if prename in f:
+            print 'reading', f
+            new_df = pd.read_csv(f)
+            df = pd.concat([df, new_df], ignore_index = True)
+            df.index = range(len(df))
+
+    return df
+
+def add_cl_ix(df):
+    df['is_sig'] = [1 if 'signal' in val else 0 for val in df.cl.values]
+    return 
 
 
 def map_phi(phi):
