@@ -48,3 +48,5 @@ if __name__ == '__main__':
     run_conversions(folder_paths, options)
 
 
+##python acquire.py -i ../../WWW/Analysis/Output/ML/ -o ../data/
+
