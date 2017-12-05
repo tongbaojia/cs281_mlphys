@@ -10,7 +10,6 @@
 bin
 obj
 models
-plots
 images/*
 python/heppy/__*
 data
